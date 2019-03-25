@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  qt-creator:
+    build:
+      context: .
+      dockerfile: sofa_qt.Dockerfile
+      args:
+        USER: fabian
+        USER_UID: 1000
+        USER_GID: 1000
+        CMAKE_BUILD_TYPE: 'RelWithDebInfo'
+    hostname: sofa-dev
+    stdin_open: true
+    tty: true
+    security_opt:
+        - seccomp:unconfined
+    devices:
+    - /dev/nvidia0
+    environment:
+    - DISPLAY=:0
+    - QT_X11_NO_MITSHM=1
+    volumes:
+    - ./home/sofa-dev/.config:/home/sofa-dev/.config
+    - ./home/sofa-dev/build:/home/sofa-dev/build
+    - ./home/sofa-dev/src:/home/sofa-dev/src
+    - /tmp/.X11-unix:/tmp/.X11-unix:rw
